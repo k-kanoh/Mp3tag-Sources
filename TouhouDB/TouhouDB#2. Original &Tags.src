@@ -70,7 +70,7 @@ ifnot "0"
 		# URL
 		json_select "id"
 		sayrest
-		say "?fields=Tracks,Names&lang=Default&songFields=Lyrics"
+		say "?fields=Tracks,Names,Tags&lang=Default&songFields=Lyrics"
 		say "|"
 
 		# Tracks
@@ -214,6 +214,12 @@ json_select_object "items"
 			# sayrest
 			# say "|"
 
+			# Original version ID (direct parent only)
+			outputto "TOUHOUDB_ORIGINAL_SONG_ID"
+			json_select "originalVersionId"
+			sayrest
+			say "|"
+
 			# Original Lyrics into UNSYNCEDLYRICS tag
 			#START lyrics block
 			outputto "UNSYNCEDLYRICS"
@@ -243,4 +249,32 @@ json_select_object "items"
 	outputto "TOUHOUDB_RELEASE_EVENT"
 	json_select "releaseEvent"
 	sayrest
+
+	# Album-level tags (all categories)
+	outputto "TOUHOUDB_ALBUM_TAGS"
+	json_foreach "tags"
+		ifnot "0"
+			json_select_object "tag"
+				json_select "name"
+				sayrest
+				say ", "
+			json_unselect_object
+		endif
+	json_foreach_end
+
+	# Album-level genres only
+	outputto "TOUHOUDB_ALBUM_GENRES"
+	json_foreach "tags"
+		ifnot "0"
+			json_select_object "tag"
+				json_select "categoryName"
+				if "Genres"
+					json_select "name"
+					sayrest
+					say ", "
+				endif
+			json_unselect_object
+		endif
+	json_foreach_end
+
 json_unselect_object

@@ -1,3 +1,8 @@
+> **Note:** This is a personal fork of [Onurtag/Mp3tag-Sources](https://github.com/Onurtag/Mp3tag-Sources).
+> Only TouhouDB #2 and #4 (original/Japanese tags) are maintained here.
+> Other sources are left as in upstream, so their behavior differs.
+
+---
 
 If anything is broken please leave feedback either here or in the mp3tag forums; or send a pull request if you can.  
 
