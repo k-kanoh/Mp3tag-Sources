@@ -70,7 +70,7 @@ ifnot "0"
 		# URL
 		json_select "id"
 		sayrest
-		say "?fields=Tracks,Names,Tags&lang=Default&songFields=Lyrics"
+		say "?fields=Tracks,Names,Tags,Artists&lang=Default&songFields=Lyrics"
 		say "|"
 
 		# Tracks
@@ -151,9 +151,21 @@ json_select_object "items"
 		sayrest
 	json_unselect_object
 
-	outputto "ALBUMARTIST"
-	json_select "artistString"
-	sayrest
+	# Album Artist: Circle name
+	json_foreach "artists"
+		ifnot "0"
+			json_select_object "artist"
+				json_select "artistType"
+				if "Circle"
+					# if multiple circles, the last one wins
+					set "ALBUMARTIST"
+					outputto "ALBUMARTIST"
+					json_select "name"
+					sayrest
+				endif
+			json_unselect_object
+		endif
+	json_foreach_end
 
 	# Names and sortnames
 	json_foreach "names"
