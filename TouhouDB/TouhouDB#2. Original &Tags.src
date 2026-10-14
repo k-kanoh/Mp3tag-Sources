@@ -180,7 +180,7 @@ json_select_object "items"
 		outputto "TRACKS"
 		json_select "name"
 		sayrest
-		# # Don't say | here because we do it after (Instrumental)
+		# # Don't say | here because we do it after the song object
 		# say "|"
 
 		json_select_object "song"
@@ -200,12 +200,8 @@ json_select_object "items"
 			sayrest
 			say "|"
 
-			# Append " (Instrumental)" to the title of instrumental tracks
+			# Close the TRACKS field
 			outputto "TRACKS"
-			json_select "songType"
-			if "Instrumental"
-				say " (Instrumental)"
-			endif
 			say "|"
 
 			# # Default Title (JP) into JAPANESETITLE tag
@@ -217,6 +213,12 @@ json_select_object "items"
 			# Original version ID (direct parent only)
 			outputto "TOUHOUDB_ORIGINAL_SONG_ID"
 			json_select "originalVersionId"
+			sayrest
+			say "|"
+
+			# Song type (Original, Arrangement, Instrumental, ...)
+			outputto "TOUHOUDB_SONG_TYPE"
+			json_select "songType"
 			sayrest
 			say "|"
 
