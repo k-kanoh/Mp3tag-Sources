@@ -10,7 +10,7 @@
 
 [Name]=TouhouDb
 [BasedOn]=touhoudb.com
-[AlbumUrl]=https://touhoudb.com/api/albums/%s?fields=AdditionalNames,Tags,Tracks,Names,MainPicture&lang=Default&songFields=Lyrics
+[AlbumUrl]=https://touhoudb.com/api/albums/%s?fields=AdditionalNames,Tags,Tracks,Names,MainPicture,Artists&lang=Default&songFields=Lyrics
 [WordSeparator]=%20
 [SearchBy]=Enter Album ID||%TOUHOUDB_ID%||%s
 [UserAgent]=1
@@ -81,9 +81,21 @@ json_select_object "items"
 		sayrest
 	json_unselect_object
 
-	outputto "ALBUMARTIST"
-	json_select "artistString"
-	sayrest
+	# Album Artist: Circle name
+	json_foreach "artists"
+		ifnot "0"
+			json_select_object "artist"
+				json_select "artistType"
+				if "Circle"
+					# if multiple circles, the last one wins
+					set "ALBUMARTIST"
+					outputto "ALBUMARTIST"
+					json_select "name"
+					sayrest
+				endif
+			json_unselect_object
+		endif
+	json_foreach_end
 
 	# Names and sortnames
 	json_foreach "names"
