@@ -128,8 +128,11 @@ json_select_object "items"
 		json_select_object "song"
 			# TOUHOUDB_TRACK_ID
 			outputto "TOUHOUDB_TRACK_ID"
-			json_select "id"
-			sayrest
+			json_select "songType"
+			ifnot ""
+				json_select "id"
+				sayrest
+			endif
 			say "|"
 
 			outputto "_LENGTH"
